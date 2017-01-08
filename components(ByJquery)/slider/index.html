@@ -4,11 +4,43 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<style type="text/css">
+	    html,body{
+			margin: 0;
+			padding: 0;
+	    }
 		#container{
 			position: absolute;
 			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
+			transform: translateX(-50%);
+			width: 70%;
+			height: 50%;
+		}
+		#container .sliders, #container img{
+			width: 100%;
+			height: 100%;
+		}
+		.sliders li{
+			position: absolute;
+			left: 0
+			top: 0;
+			display: inline-block;
+			width: 100%;
+			height: 100%;
+		}
+		#container .togs{
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 10px;
+			z-index: 10;
+		}
+		.togs li{
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			border-radius: 50% 50%;
+			background: #fff;
+			cursor: pointer;
 		}
 	</style>
 </head>
@@ -20,10 +52,80 @@
 			<li></li>
 		</ul>
 		<ul class="sliders">
-			<li class="slider"><img src="../img/banner1.jpg"></li>
-			<li class="slider"><img src="../img/banner2.jpg"></li>
-			<li class="slider"><img src="../img/banner3.jpg"></li>
+			<li class="slider"><img title="1" src="./imgs/banner1.jpg"></li>
+			<li class="slider"><img title="2" src="./imgs/banner2.jpg"></li>
+			<li class="slider"><img title="3" src="./imgs/banner3.jpg"></li>
 		</ul>
 	</div>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript">
+		var util = {
+			html2node: function(template){
+				var container = $('<div></div>');
+				container.innerHTML = template;
+				return container.children[0];
+			}
+		}
+		var template = 
+			'<ul class="sliders">\
+				<li class="slider"><img title="1" src="./imgs/banner1.jpg"></li>\
+				<li class="slider"><img title="2" src="./imgs/banner2.jpg"></li>\
+				<li class="slider"><img title="3" src="./imgs/banner3.jpg"></li>\
+			</ul>';
+		function Slider(container, options){
+			this.container = container || document.body;
+			this.container.style.overflow = 'hidden';
+
+			$.append(container, this._layout);
+			this.imgs = options || [];
+			this.imgsNum = this.imgs.length;
+
+			this.togsNum = 3;
+
+			this.pageIndex = this.pageIndex || 0;
+			this.sliderIndex = 1;
+			this.offsetAll = this.pageIndex;
+		}
+
+		$.extend(Slider.prototype, {
+			_layout: util.html2node(template),
+
+			pre: function(){
+				this._step(-1);
+			},
+
+			next: function(){
+				this._step(1);
+			},
+
+			nav: function(index){
+				this.pageIndex = index;
+				this.sliderIndex = this.pageIndex + 1;
+				this.offsetAll = this.pageIndex;
+			},
+
+			_normindex: function(index, length){
+				return (index + length) % length;
+			},
+
+			_step: function(index){
+				this.pageIndex += index;
+				this.sliderIndex += index; 
+				this.offsetAll += index;
+				this._calcade();
+			},
+
+			_calcade: function(){
+				var imgsNum = this.imgsNum;
+				var pageIndex = this.pageIndex = this._normindex(this.pageIndex, this.imgsNum);
+				var sliderIndex = this.sliderIndex = this._normindex(this.sliderIndex, this.togsNUm);
+				var offsetAll = this.offsetAll;
+
+				
+			},
+
+
+		})
+	</script>
 </body>
 </html>

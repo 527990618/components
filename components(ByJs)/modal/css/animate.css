@@ -1,0 +1,10 @@
+@keyframes popIn{
+	from{transform: scale(0,0);}
+	to{transform: scale(1,1);}
+}
+.pop-in{
+	animation: popIn 0.7s ease;
+}
+.pop-out{
+	animation: popIn 0.7s ease reverse;
+}

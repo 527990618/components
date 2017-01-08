@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>modal</title>
+	<link rel="stylesheet" href="./css/normalize.css">
+	<link rel="stylesheet" href="./css/modal.css">
+	<link rel="stylesheet" href="./css/animate.css">
+</head>
+<body>
+	<!-- <div class="m-modal-cotain"> -->
+	<!-- 	<div class="m-modal"> -->
+	<!-- 		<div class="tit">信息</div> -->
+	<!-- 		<div class="content">你热爱前端吗？</div> -->
+	<!-- 		<div class="btn-area"> -->
+	<!-- 			<button class="u-btn">关闭</button> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- </div> -->
+	<a id="showModal" class="u-btn" href="javascript:;">打开</a>
+	<script src="./js/modal.js"></script>
+	<script>
+		const modal = new Modal({
+			title: '信息',
+			content: '你热爱前端吗？',
+			animation: {
+				enter: 'pop-in',
+				leave: 'pop-out'
+			},
+		})
+
+		let showModal = document.getElementById('showModal');
+		showModal.addEventListener('click', () => modal.open());
+
+	</script>
+</body>
+</html>

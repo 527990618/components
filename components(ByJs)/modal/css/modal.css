@@ -1,0 +1,51 @@
+.m-modal-cotain{
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0,0,0,0.3);
+}
+.m-modal{
+	position: fixed;
+	left: calc(50% - 160px);
+	top: calc(50% - 100px);
+	width: 320px;
+	height: 200px;
+	background-color: #e74c3c;
+	color: #fff;
+	font-family: "微软雅黑";
+	border-radius: 3px;
+}
+.m-modal .tit{
+	font-size: 22px;
+	line-height: 40px;
+	text-align: center;
+	background-color: #d44637;
+}
+.m-modal .content{
+	text-align: center;
+	box-sizing: border-box;
+	padding: 42px 0;
+	height: 100px;
+	font-size: 16px;
+}
+.m-modal .btn-area{
+	padding: 15px 0;
+	text-align: center;
+}
+.u-btn{
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	box-sizing: border-box;
+	background-color: #c0392b;
+	border: none;
+	border-radius: 2px;
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 20px;
+	color: #fff;
+	outline: none;
+}
+.m-modal .u-btn{
+	width: 70px;
+	line-height: 30px;
+}
