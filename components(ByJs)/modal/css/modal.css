@@ -1,10 +1,14 @@
 .m-modal-cotain{
+	position: fixed;
+	left: 0;
+	top: 0;
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(0,0,0,0.3);
+	z-index: 9999;
 }
 .m-modal{
-	position: fixed;
+	position: absolute;
 	left: calc(50% - 160px);
 	top: calc(50% - 100px);
 	width: 320px;

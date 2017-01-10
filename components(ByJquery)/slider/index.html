@@ -21,7 +21,7 @@
 		}
 		.sliders li{
 			position: absolute;
-			left: 0
+			left: 0;
 			top: 0;
 			display: inline-block;
 			width: 100%;
@@ -51,19 +51,28 @@
 			<li></li>
 			<li></li>
 		</ul>
-		<ul class="sliders">
+<!-- 		<ul class="sliders">
 			<li class="slider"><img title="1" src="./imgs/banner1.jpg"></li>
 			<li class="slider"><img title="2" src="./imgs/banner2.jpg"></li>
 			<li class="slider"><img title="3" src="./imgs/banner3.jpg"></li>
-		</ul>
+		</ul> -->
 	</div>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> -->
+	<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
 	<script type="text/javascript">
 		var util = {
 			html2node: function(template){
 				var container = $('<div></div>');
-				container.innerHTML = template;
-				return container.children[0];
+				container.html(template);
+				return container[0].children[0];
+			},
+
+			extend: function(o1, o2){
+				for(var i in o2){
+					if(o1[i] === undefined){
+						o1[i] = o2[i];
+					}
+				}
 			}
 		}
 		var template = 
@@ -72,12 +81,13 @@
 				<li class="slider"><img title="2" src="./imgs/banner2.jpg"></li>\
 				<li class="slider"><img title="3" src="./imgs/banner3.jpg"></li>\
 			</ul>';
-		function Slider(container, options){
-			this.container = container || document.body;
+		function Slider(options){
+
+			$.extend(this, options);
+			this.container = this.container || document.body;
 			this.container.style.overflow = 'hidden';
 
-			$.append(container, this._layout);
-			this.imgs = options || [];
+			this.imgs = this.images || [];
 			this.imgsNum = this.imgs.length;
 
 			this.togsNum = 3;
@@ -85,10 +95,17 @@
 			this.pageIndex = this.pageIndex || 0;
 			this.sliderIndex = 1;
 			this.offsetAll = this.pageIndex;
+
+			this.sliderWrap = this._layout.querySelector('.slider');
+			this.sliders = [].slice.call(this._layout.querySelectorAll('.slider'));
+			$(this.container).append(this._layout);
 		}
 
 		$.extend(Slider.prototype, {
 			_layout: util.html2node(template),
+			// _layout: function(){
+			// 	return  util.html2node(template);
+			// },
 
 			pre: function(){
 				this._step(-1);
@@ -98,11 +115,11 @@
 				this._step(1);
 			},
 
-			nav: function(index){
-				this.pageIndex = index;
-				this.sliderIndex = this.pageIndex + 1;
-				this.offsetAll = this.pageIndex;
-			},
+			// nav: function(index){
+			// 	this.pageIndex = index;
+			// 	this.sliderIndex = this.pageIndex + 1;
+			// 	this.offsetAll = this.pageIndex;
+			// },
 
 			_normindex: function(index, length){
 				return (index + length) % length;
@@ -115,17 +132,45 @@
 				this._calcade();
 			},
 
+			_normindex: function(index, num){
+				return index % num;
+			},
+
 			_calcade: function(){
 				var imgsNum = this.imgsNum;
 				var pageIndex = this.pageIndex = this._normindex(this.pageIndex, this.imgsNum);
 				var sliderIndex = this.sliderIndex = this._normindex(this.sliderIndex, this.togsNUm);
 				var offsetAll = this.offsetAll;
 
-				
+				this.sliders[sliderIndex].style.left = offsetAll * 100 + '%';
+				this.sliders[sliderIndex - 1].style.left = (offsetAll - 1) * 100 + '%';
+				this.sliders[sliderIndex + 1].style.left = parseInt(offsetAll + 1) * 100 + '%';
+				this.sliderWrap.style.transform = 'translateX(-offsetAll * 100 + '%') translateZ(0)';
+
+				this._onNav(this.pageIndex, sliderIndex);
 			},
+
+			_onNav: function(imgIndex, sliderIndex){
+				var sliders = this.sliders;
+				for(var i = 0; i < sliders.length; i++){
+					sliders[i].src = this.imgs[imgIndex]; 
+					imgIndex++;
+				}
+			}
 
 
 		})
+	</script>
+	<script>
+		var container = document.querySelector('#container');
+		var slider = new Slider({
+			container:  container,
+			images: [
+				'./imgs/banner1.jpg',
+				'./imgs/banner2.jpg',
+				'./imgs/banner3.jpg',
+			]
+		});
 	</script>
 </body>
 </html>
