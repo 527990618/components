@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/normalize.css">
+	<link rel="stylesheet" href="./css/slider.css">
+</head>
+<body>
+	<div id="container">
+
+		<ul class="arrow">
+			<li class="pre"><</li>
+			<li class="next">></li>
+		</ul>
+<!-- 		<ul class="sliders">
+			<li class="slider"></li>
+			<li class="slider"></li>
+			<li class="slider"></li>
+		</ul> -->
+	</div>
+	<script src="./js/util.js"></script>
+	<script src="./js/slider.js"></script>
+	<script>
+	var container = document.getElementById('container');
+
+	var slider = new Slider({
+		container: container,
+		imgs:[
+			'./images/slider-1.jpg',
+			'./images/slider-2.jpg',
+			'./images/slider-3.jpg'
+			// './images/slider-4.jpg',
+			// './images/slider-5.jpg'
+		]
+	});
+
+	var pre = container.querySelector('.arrow .pre'),
+		next = container.querySelector('.arrow .next');
+
+		pre.addEventListener('click', function(){
+			slider.pre();
+		})
+
+		next.addEventListener('click', function(){
+			slider.next();
+		})
+	</script>
+</body>
+</html>

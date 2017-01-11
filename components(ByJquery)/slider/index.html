@@ -19,6 +19,9 @@
 			width: 100%;
 			height: 100%;
 		}
+		#container .sliders{
+			transition: transform 0.7s;
+		}
 		.sliders li{
 			position: absolute;
 			left: 0;
@@ -42,6 +45,25 @@
 			background: #fff;
 			cursor: pointer;
 		}
+		.togs li.active{
+			background-color: #000;
+		}
+		.arrow .pre,.arrow .next{
+			position: absolute;
+			display: inline-block;
+			top: 50%;
+			transform: translateY(-50%);
+			color: #fff;
+			font-size: 30px;
+			cursor: pointer;
+			z-index: 999;
+		}
+		.arrow .pre{
+			left: 20px;
+		}
+		.arrow .next{
+			right: 20px;
+		}
 	</style>
 </head>
 <body>
@@ -51,11 +73,10 @@
 			<li></li>
 			<li></li>
 		</ul>
-<!-- 		<ul class="sliders">
-			<li class="slider"><img title="1" src="./imgs/banner1.jpg"></li>
-			<li class="slider"><img title="2" src="./imgs/banner2.jpg"></li>
-			<li class="slider"><img title="3" src="./imgs/banner3.jpg"></li>
-		</ul> -->
+		<ul class="arrow">
+			<li class="pre"><</li>
+			<li class="next">></li>
+		</ul>
 	</div>
 	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> -->
 	<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
@@ -96,9 +117,9 @@
 			this.sliderIndex = 1;
 			this.offsetAll = this.pageIndex;
 
-			this.sliderWrap = this._layout.querySelector('.slider');
+			this.sliderWrap = this._layout;
 			this.sliders = [].slice.call(this._layout.querySelectorAll('.slider'));
-			$(this.container).append(this._layout);
+			$(this.container).append(this.sliderWrap);
 		}
 
 		$.extend(Slider.prototype, {
@@ -115,50 +136,60 @@
 				this._step(1);
 			},
 
-			// nav: function(index){
-			// 	this.pageIndex = index;
-			// 	this.sliderIndex = this.pageIndex + 1;
-			// 	this.offsetAll = this.pageIndex;
-			// },
+			nav: function(index){
+				this.pageIndex = index;
+				console.log(this.sliderIndex);
+				this.sliderIndex = typeof this.slideIndex === 'number'? this.slideIndex: (index+1) % 3;
+				this.offsetAll = this.pageIndex;
+				this._calcade();
+			},
 
 			_normindex: function(index, length){
 				return (index + length) % length;
 			},
 
 			_step: function(index){
-				this.pageIndex += index;
-				this.sliderIndex += index; 
-				this.offsetAll += index;
+				this.pageIndex += parseInt(index);
+				this.sliderIndex += parseInt(index); 
+				this.offsetAll += parseInt(index);
 				this._calcade();
 			},
 
 			_normindex: function(index, num){
-				return index % num;
+				return ( index + num ) % num;
 			},
 
 			_calcade: function(){
 				var imgsNum = this.imgsNum;
-				var pageIndex = this.pageIndex = this._normindex(this.pageIndex, this.imgsNum);
-				var sliderIndex = this.sliderIndex = this._normindex(this.sliderIndex, this.togsNUm);
+				var sliders = this.sliders;
+				var pageIndex = this.pageIndex = this._normindex(this.pageIndex, sliders.length);
+				var sliderIndex = this.sliderIndex = this._normindex(this.sliderIndex, this.togsNum);
 				var offsetAll = this.offsetAll;
 
-				this.sliders[sliderIndex].style.left = offsetAll * 100 + '%';
-				this.sliders[sliderIndex - 1].style.left = (offsetAll - 1) * 100 + '%';
-				this.sliders[sliderIndex + 1].style.left = parseInt(offsetAll + 1) * 100 + '%';
-				this.sliderWrap.style.transform = 'translateX(-offsetAll * 100 + '%') translateZ(0)';
+				var preSliderIndex = this._normindex(sliderIndex - 1, sliders.length);
+				var nextSliderIndex = this._normindex(sliderIndex + 1, sliders.length);
 
-				this._onNav(this.pageIndex, sliderIndex);
+				this.sliders[sliderIndex].style.left = offsetAll * 100 + '%';
+				this.sliders[preSliderIndex].style.left = (offsetAll - 1) * 100 + '%';
+				this.sliders[nextSliderIndex].style.left = parseInt(offsetAll + 1) * 100 + '%';
+
+				this.sliderWrap.style.transform = 'translateX('+ (-offsetAll * 100) + '%) translateZ(0)';
+
+				this._onNav(pageIndex, sliderIndex);
 			},
 
 			_onNav: function(imgIndex, sliderIndex){
 				var sliders = this.sliders;
-				for(var i = 0; i < sliders.length; i++){
-					sliders[i].src = this.imgs[imgIndex]; 
-					imgIndex++;
+				for(var i = -1; i < sliders.length - 1; i++){ 
+					var index = this._normindex(parseInt(sliderIndex + i), sliders.length);
+					var img = sliders[index].querySelector('img');
+					if(!img){
+						img = document.createElement('img');
+						sliders[index].appendChild(img);
+					}
+					img.src = this.imgs[this._normindex(imgIndex + i, this.imgsNum)]; 
 				}
 			}
-
-
 		})
 	</script>
 	<script>
@@ -171,6 +202,20 @@
 				'./imgs/banner3.jpg',
 			]
 		});
+		slider.nav(0);
+		var togs = document.querySelectorAll('.togs>li');
+		togs.forEach( (item, index) => {
+			$(item).on('click', function(){
+				var $this = $(this);
+				slider.nav(index);
+			})
+		})
+		$('.pre').click(function(){
+			slider.pre();
+		})
+		$('.next').click(function(){
+			slider.next();
+		})
 	</script>
 </body>
 </html>
