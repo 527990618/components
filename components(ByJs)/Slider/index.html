@@ -22,20 +22,20 @@
 	<script src="./js/util.js"></script>
 	<script src="./js/slider.js"></script>
 	<script>
-	var container = document.getElementById('container');
+	let container = document.getElementById('container');
 
-	var slider = new Slider({
+	let slider = new Slider({
 		container: container,
 		imgs:[
 			'./images/slider-1.jpg',
 			'./images/slider-2.jpg',
-			'./images/slider-3.jpg'
-			// './images/slider-4.jpg',
-			// './images/slider-5.jpg'
+			'./images/slider-3.jpg',
+			'./images/slider-4.jpg',
+			'./images/slider-5.jpg'
 		]
 	});
 
-	var pre = container.querySelector('.arrow .pre'),
+	let pre = container.querySelector('.arrow .pre'),
 		next = container.querySelector('.arrow .next');
 
 		pre.addEventListener('click', function(){
@@ -45,6 +45,8 @@
 		next.addEventListener('click', function(){
 			slider.next();
 		})
+
+		
 	</script>
 </body>
 </html>

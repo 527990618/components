@@ -40,8 +40,8 @@
 	margin: 0 2px;
 	cursor: pointer;
 }
-.togs li.active{
-	background-color: #000;
+.togs li.z-active{
+	background-color: #db192a;
 }
 .arrow .pre,.arrow .next{
 	position: absolute;
