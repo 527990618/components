@@ -14,6 +14,10 @@
 			Object.assign(this, opts);
 			this.container = this.container || document.body;
 			this.pages = this.imgs || [];
+
+			this.animationDuration = this.animationDuration || 5000;
+			this.animationend = true;
+			this.limit = this.limit || this.animationDuration;
 	
 			this.pageIndex = 0;
 			this.offsetAll = 0;
@@ -75,19 +79,25 @@
 		}
 
 		_step(index){
-			this.pageIndex += Number(index);
-			this.offsetAll += Number(index);
-			this.sliderIndex += Number(index);
-			this.sliderWrap.style.transitionDuration = '.5s';
-			this._calculated();
+			if(this.animationend){
+				this.pageIndex += Number(index);
+				this.offsetAll += Number(index);
+				this.sliderIndex += Number(index);
+				this.sliderWrap.style.transitionDuration = this.animationDuration / 1000 + 's';
+				// util.throttle(this._calculated, this.limit, this);
+				this._calculated();
+			}
 		}
 
 		nav(index){
-			this.pageIndex = index;
-			this.sliderIndex = this.sliderIndex;
-			this.offsetAll = index;
-			this.sliderWrap.style.transitionDuration = '0s';
-			this._calculated();
+			if(this.animationend){
+				this.pageIndex = index;
+				this.sliderIndex = this.sliderIndex;
+				this.offsetAll = index;
+				this.sliderWrap.style.transitionDuration = '0s';
+				// util.throttle(this._calculated, this.limit, this);
+				this._calculated();				
+			}
 		}
 
 		_normalizeIndex(index, len){
@@ -107,10 +117,15 @@
 			sliders[sliderIndex].style.left = this.offsetAll * 100 + '%';
 			sliders[nextSliderIndex].style.left = (this.offsetAll + 1) * 100 + '%';
 
+
 			sliderWrap.style.transform = 'translateX(' + (-this.offsetAll) * 100 + '%' + ') translateZ(0)';
+			this.animationend = false;
+			// sliderWrap.addEventListener('animationend', () => this.animationend = true)
+			setTimeout( () => this.animationend = true, this.limit );
 
 			this._setImgs(pageIndex, sliderIndex);
 			this.emit('togStateChange', pageIndex);
+
 
 
 		}
@@ -133,7 +148,7 @@
 
 	}
 
-	util.extend(Slider.prototype, util.emitter);
+	Object.assign(Slider.prototype, util.emitter);
 
 
 	window.Slider = Slider;

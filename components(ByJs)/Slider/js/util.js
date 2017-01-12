@@ -15,6 +15,13 @@ var util = (function(){
 			}
 		},
 
+		throttle(method, time, context){
+			clearTimeout(method.timer);
+			method.timer = setTimeout(function(){
+				method.apply(context);
+			}, time);
+		},
+
 		emitter: {
 			on(event, fn){
 				var handlers = this._handlers ||　(this._handlers = {}),
