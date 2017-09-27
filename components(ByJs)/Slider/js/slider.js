@@ -1,7 +1,7 @@
 
 ;(function(util){
 
-	var template = 
+	var template =
 		`<ul class="sliders">
 			<li class="slider"></li>
 			<li class="slider"></li>
@@ -18,7 +18,7 @@
 			this.animationDuration = this.animationDuration || 5000;
 			this.animationend = true;
 			this.limit = this.limit || this.animationDuration;
-	
+
 			this.pageIndex = 0;
 			this.offsetAll = 0;
 			this.sliderIndex = 1;
@@ -54,7 +54,7 @@
 				// togsContainer.addEventListener('click', e => {
 				// 	var elm = e.target;
 				// 	this._addActive(elm);
-				// })	
+				// })
 			this.on('togStateChange', function(index){
 				togs.forEach((tog, i) => {
 					if(i === index){
@@ -67,7 +67,7 @@
 				})
 			})
 
-			this.container.appendChild(togsContainer);	
+			this.container.appendChild(togsContainer);
 		}
 
 		pre(){
@@ -96,7 +96,7 @@
 				this.offsetAll = index;
 				this.sliderWrap.style.transitionDuration = '0s';
 				// util.throttle(this._calculated, this.limit, this);
-				this._calculated();				
+				this._calculated();
 			}
 		}
 
@@ -106,31 +106,34 @@
 
 		_calculated(){
 			const sliders = this.sliders,
-				sliderWrap = this.sliderWrap,
 				pageIndex = this.pageIndex = this._normalizeIndex(this.pageIndex, this.pages.length),
 				sliderIndex = this.sliderIndex = this._normalizeIndex(this.sliderIndex, sliders.length);
 
 			const preSliderIndex = this._normalizeIndex(sliderIndex - 1, sliders.length),
 				nextSliderIndex = this._normalizeIndex(sliderIndex + 1, sliders.length);
 
+			this.beforeTranslate(preSliderIndex, sliderIndex, nextSliderIndex)
+		}
+
+		beforeTranslate(preSliderIndex, sliderIndex, nextSliderIndex){
+			if(preSliderIndex === undefined || sliderIndex === undefined || nextSliderIndex === undefined) return
+			const sliders = this.sliders,
+				pageIndex = this.pageIndex,
+				sliderWrap = this.sliderWrap;
 			sliders[preSliderIndex].style.left = (this.offsetAll - 1) * 100 + '%';
 			sliders[sliderIndex].style.left = this.offsetAll * 100 + '%';
 			sliders[nextSliderIndex].style.left = (this.offsetAll + 1) * 100 + '%';
-
 
 			sliderWrap.style.transform = 'translateX(' + (-this.offsetAll) * 100 + '%' + ') translateZ(0)';
 			this.animationend = false;
 			// sliderWrap.addEventListener('animationend', () => this.animationend = true)
 			setTimeout( () => this.animationend = true, this.limit );
 
-			this._setImgs(pageIndex, sliderIndex);
+			this.translate(pageIndex, sliderIndex);
 			this.emit('togStateChange', pageIndex);
-
-
-
 		}
 
-		_setImgs(pageIndex, sliderIndex){
+		translate(pageIndex, sliderIndex){
 			for(var i = -1; i < this.sliders.length - 1; i++){
 				var slider = this.sliders[this._normalizeIndex(sliderIndex + i, this.sliders.length)],
 					img = slider.querySelector('img');
@@ -142,7 +145,7 @@
 				if(img.src != src){
 					img.src = src;
 				}
-				
+
 			}
 		}
 

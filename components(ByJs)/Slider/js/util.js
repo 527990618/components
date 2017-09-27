@@ -6,7 +6,7 @@ var util = (function(){
 			container.innerHTML = template;
 			return container.children[0];
 		},
-	
+
 		extend(o1, o2){
 			for(var i in o2){
 				if(o1[i] === undefined){
@@ -22,11 +22,28 @@ var util = (function(){
 			}, time);
 		},
 
+		animate(elem, property, from, to, duration, callback){
+			// requestAnimationFrame
+			const dis = to - from
+			const stepsNum = duration / 1000 * 60
+			const stepDis = dis / stepsNum
+			let lastValue = from
+			function stepAnimate(){
+				lastValue = elem.style[property] = lastValue + stepDis
+				if((dis > 0 && lastValue < to) || (dis < 0 && lastValue > to)) {
+					requestAnimationFrame(stepAnimate)
+				} else {
+					callback && callback()
+				}
+			}
+			requestAnimationFrame(stepAnimate)
+		},
+
 		emitter: {
 			on(event, fn){
 				var handlers = this._handlers ||　(this._handlers = {}),
 					calls = handlers[event] || (handlers[event] = []);
-				calls.push(fn); 
+				calls.push(fn);
 				return this;
 			},
 
@@ -52,13 +69,13 @@ var util = (function(){
 
 			emit(event){
 				var data = [].slice.call(arguments, 1),
-					handlers = this._handlers, 
+					handlers = this._handlers,
 					calls;
 
 				if (!handlers || !(calls = handlers[event])) return this;
 				calls.forEach(fn => fn.apply(this, data));
 				return this;
 			}
-		}					
+		}
 	}
 })();
