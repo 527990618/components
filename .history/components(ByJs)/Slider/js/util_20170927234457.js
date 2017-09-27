@@ -22,7 +22,7 @@ var util = (function(){
 		},
 
 		animate(elem, property, from, to, duration, onStart, onEnd){
-			onStart && onStart()
+			// requestAnimationFrame
 			const dis = to - from
 			const stepsNum = duration / 1000 * 60
 			const stepDis = dis / stepsNum
@@ -32,7 +32,7 @@ var util = (function(){
 				if((dis > 0 && lastValue < to) || (dis < 0 && lastValue > to)) {
 					requestAnimationFrame(stepAnimate)
 				} else {
-					onEnd && onEnd()
+					callback && callback()
 				}
 			}
 			requestAnimationFrame(stepAnimate)

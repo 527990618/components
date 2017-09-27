@@ -1,0 +1,61 @@
+.swiper-container{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 70%;
+	height: 50%;
+	overflow: hidden;
+}
+.swiper-container .sliders, .swiper-container img{
+	width: 100%;
+	height: 100%;
+}
+.swiper-container .sliders{
+	padding-left: 0;
+	transition: transform 0.7s;
+}
+.sliders li{
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+}
+#container .togs{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 15px;
+	z-index: 10;
+}
+.togs li{
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 50% 50%;
+	background: #fff;
+	margin: 0 2px;
+	cursor: pointer;
+}
+.togs li.z-active{
+	background-color: #db192a;
+}
+.arrow .pre,.arrow .next{
+	position: absolute;
+	display: inline-block;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #fff;
+	font-size: 40px;
+	cursor: pointer;
+	z-index: 999;
+}
+.arrow .pre{
+	left: 20px;
+}
+.arrow .next{
+	right: 20px;
+}

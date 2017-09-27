@@ -1,5 +1,6 @@
 var util = (function(){
 	return {
+
 		html2node(template){
 			var container = document.createElement('div');
 			container.innerHTML = template;
@@ -21,8 +22,8 @@ var util = (function(){
 			}, time);
 		},
 
-		animate(elem, property, from, to, duration, onStart, onEnd){
-			onStart && onStart()
+		animate(elem, property, from, to, duration, callback){
+			// requestAnimationFrame
 			const dis = to - from
 			const stepsNum = duration / 1000 * 60
 			const stepDis = dis / stepsNum
@@ -32,7 +33,7 @@ var util = (function(){
 				if((dis > 0 && lastValue < to) || (dis < 0 && lastValue > to)) {
 					requestAnimationFrame(stepAnimate)
 				} else {
-					onEnd && onEnd()
+					callback && callback()
 				}
 			}
 			requestAnimationFrame(stepAnimate)
