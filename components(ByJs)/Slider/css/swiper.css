@@ -22,7 +22,7 @@
 	width: 100%;
 	height: 100%;
 }
-#container .togs{
+.swiper-container .swiper-paginations{
 	position: absolute;
 	margin: 0;
 	padding: 0;
@@ -31,7 +31,7 @@
 	bottom: 15px;
 	z-index: 10;
 }
-.togs li{
+.swiper-paginations li{
 	display: inline-block;
 	width: 10px;
 	height: 10px;
@@ -40,7 +40,7 @@
 	margin: 0 2px;
 	cursor: pointer;
 }
-.togs li.z-active{
+.swiper-paginations li.z-active{
 	background-color: #db192a;
 }
 .arrow .pre,.arrow .next{
